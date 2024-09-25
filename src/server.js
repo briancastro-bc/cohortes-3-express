@@ -6,9 +6,11 @@ import morgan from 'morgan';
 
 import './database/connection.js';
 
+import { auth, } from './middlewares/auth.middleware.js';
+
 // Paso 2. Importar nuestro modulo.
 import authRouter from './routes/auth.routes.js';
-import exp from 'constants';
+import usersRouter from './routes/users.routes.js';
 
 async function main() {
   const port = +process.env.APP_PORT ?? 4000;
@@ -17,26 +19,16 @@ async function main() {
   app.use(morgan('dev'));
   app.use(express.json());
 
+  // Definir un middleware a nivel global.
+  // app.use(auth);
+
   app.get('/', (req, res) => {
     res.send('Hola mundo!');
   });
 
   app.use('/auth', authRouter);
-
-  // const usersExists = await User.findOne({
-  //   where: {
-  //     id: 'cualquiercosa',
-  //   },
-  // });
-
-  // if (!usersExists) {
-  //   await User.create({
-  //     id: 'cualquiercosa',
-  //     email: 'brian@mail.com',
-  //     password: '123456',
-  //     name: 'Brian Castro',
-  //   });
-  // }
+  // Anadir el middleware en el router que necesitamos.
+  app.use('/users', auth, usersRouter);
 
   const httpServer = http.createServer(app);
   httpServer.listen(port, () => {

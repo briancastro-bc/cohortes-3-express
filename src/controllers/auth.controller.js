@@ -48,14 +48,15 @@ export async function createLogin(req, res) {
   // Paso 5. Generar un token de acceso.
   const now = new Date();
 
-  const TWO_HOURS_IN_MS = 1000 * 60 * 60 * 2;
-  const expiresIn = now.getTime() + TWO_HOURS_IN_MS;
+  const TWO_HOURS_IN_MS = 60 * 60 * 2;  // 2 horas de caducidad
+  const expiresIn = Math.floor(now.getTime() / 1000) + TWO_HOURS_IN_MS;
+  const issuedAt = Math.floor(now.getTime() / 1000);
 
   // Claims standard: sub, exp, iat, iss
   const payload = {
     sub: user.id, // Subject es el usuario
     exp: expiresIn, // Expiration es la caducidad
-    iat: now.getTime(), // Fecha de emision
+    iat: issuedAt, // Fecha de emision
     iss: process.env.JWT_ISSUER, // Quien emitio el token (servidor).
   };
   
@@ -67,7 +68,7 @@ export async function createLogin(req, res) {
       success: true,
       data: {
         token,
-        expiresIn: TWO_HOURS_IN_MS,
+        expiresIn,
       },
     });
 }

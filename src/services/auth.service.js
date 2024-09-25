@@ -28,8 +28,17 @@ export function jwtEncode(payload) {
   return token;
 }
 
-export async function jwtDecode() {}
+export async function jwtDecode(encoded) {}
 
-export async function jwtVerify() {}
+export function jwtVerify(encoded) {
+  try {
+    const secret = process.env.JWT_SECRET;
+
+    const verified = jwt.verify(encoded, secret);
+    return verified;
+  } catch (err) {
+    return null;
+  }
+}
 
 
