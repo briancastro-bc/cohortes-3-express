@@ -1,6 +1,7 @@
+import { v4, } from 'uuid';
 import { DataTypes, } from 'sequelize';
 
-import { connection } from '../connection.js';
+import { connection, } from '../connection.js';
 
 const User = connection.define(
   'users',
@@ -8,17 +9,21 @@ const User = connection.define(
     id: {
       type: DataTypes.STRING,
       primaryKey: true,
+      defaultValue: v4(),
     },
     email: {
       type: DataTypes.STRING,
       unique: true,
     },
-    password: {
-      type: DataTypes.STRING,
+    password: DataTypes.STRING,
+    givenName: DataTypes.STRING,
+    lastName: DataTypes.STRING,
+    phoneNumber: {
+      type: DataTypes.STRING(15),
+      unique: true,
+      allowNull: true,
     },
-    name: {
-      type: DataTypes.STRING,
-    },
+    address: DataTypes.STRING,
   },
   {
     timestamps: true, // createdAt, updatedAt

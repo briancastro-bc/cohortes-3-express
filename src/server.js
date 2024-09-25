@@ -5,16 +5,17 @@ import express from 'express';
 import morgan from 'morgan';
 
 import './database/connection.js';
-import { User, } from './database/models/user.model.js';
 
 // Paso 2. Importar nuestro modulo.
 import authRouter from './routes/auth.routes.js';
+import exp from 'constants';
 
 async function main() {
   const port = +process.env.APP_PORT ?? 4000;
   const app = express();
 
   app.use(morgan('dev'));
+  app.use(express.json());
 
   app.get('/', (req, res) => {
     res.send('Hola mundo!');
