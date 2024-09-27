@@ -1,6 +1,7 @@
 import 'dotenv/config';
 
 import http from 'http';
+import cors from 'cors';
 import express from 'express';
 import morgan from 'morgan';
 
@@ -17,6 +18,7 @@ async function main() {
   const app = express();
 
   app.use(morgan('dev'));
+  app.use(cors());
   app.use(express.json());
 
   // Definir un middleware a nivel global.
