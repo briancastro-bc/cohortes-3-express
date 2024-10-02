@@ -9,7 +9,6 @@ const User = connection.define(
     id: {
       type: DataTypes.STRING,
       primaryKey: true,
-      defaultValue: v4(),
     },
     email: {
       type: DataTypes.STRING,
@@ -30,8 +29,6 @@ const User = connection.define(
   },
 );
 
-User.sync({
-  // force: true,
-});
-
-export { User, };
+export { 
+  User, 
+};

@@ -12,6 +12,8 @@ import { auth, } from './middlewares/auth.middleware.js';
 // Paso 2. Importar nuestro modulo.
 import authRouter from './routes/auth.routes.js';
 import usersRouter from './routes/users.routes.js';
+import searchRouter from './routes/search.routes.js';
+import backofficeRouter from './routes/backoffice.routes.js';
 
 async function main() {
   const port = +process.env.APP_PORT ?? 4000;
@@ -29,8 +31,10 @@ async function main() {
   });
 
   app.use('/auth', authRouter);
+  app.use('/search', searchRouter);
   // Anadir el middleware en el router que necesitamos.
   app.use('/users', auth, usersRouter);
+  app.use('/backoffice', auth, backofficeRouter);
 
   const httpServer = http.createServer(app);
   httpServer.listen(port, () => {

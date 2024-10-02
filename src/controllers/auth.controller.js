@@ -1,3 +1,5 @@
+import { v4, } from 'uuid';
+
 import { 
   hashPassword, 
   jwtEncode, 
@@ -125,6 +127,7 @@ export async function createSignup(req, res) {
 
   // Paso 5. Crear el usuario en base de datos
   const created = await User.create({
+    id: v4(),
     email,
     password: passwordHash,
     givenName,
