@@ -1,4 +1,3 @@
-import { v4, } from 'uuid';
 import { DataTypes, } from 'sequelize';
 
 import { connection, } from '../connection.js';
@@ -23,6 +22,11 @@ const User = connection.define(
       allowNull: true,
     },
     address: DataTypes.STRING,
+    // TODO: agregar opcion de administrador.
+    // isAdmin: {
+    //   type: DataTypes.BOOLEAN,
+    //   defaultValue: false,
+    // },
   },
   {
     timestamps: true, // createdAt, updatedAt
