@@ -37,7 +37,11 @@ async function main() {
   app.use('/search', searchRouter);
   // Anadir el middleware en el router que necesitamos.
   app.use('/users', auth, usersRouter);
-  app.use('/reservations', auth, reservationRouter);
+  app.use(
+    '/reservations', 
+    auth,
+    reservationRouter
+  );
   app.use('/backoffice', auth, backofficeRouter);
 
   const httpServer = http.createServer(app);
