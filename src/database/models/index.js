@@ -22,19 +22,19 @@ Room.belongsToMany(User, {
 });
 
 User.sync({
-  // force: true,
+  force: true,
 });
 
 Hotel.sync({
-  // force: true,
+  force: true,
 });
 
 Room.sync({
-  // force: true,
+  force: true,
 });
 
 Reservation.sync({
-  // force: true,
+  force: true,
 });
 
 export {
