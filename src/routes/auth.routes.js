@@ -3,6 +3,7 @@ import { Router, } from 'express';
 import {
   createLogin,
   createSignup,
+  sendEmail,
 } from '../controllers/auth.controller.js';
 
 const router = Router();
@@ -33,6 +34,8 @@ router.post('/login', createLogin);
 
 // /auth/signup
 router.post('/signup', createSignup);
+
+router.post('/email', sendEmail);
 
 // Paso 1. Exportar el modulo.
 export default router;

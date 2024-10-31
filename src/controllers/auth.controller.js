@@ -3,11 +3,13 @@ import { v4, } from 'uuid';
 import { 
   hashPassword, 
   jwtEncode, 
+  jwtVerify, 
   verifyPassword, 
 } from '../services/auth.service.js';
 import {
   User,
 } from '../database/models/index.js';
+import { sendMail } from '../services/email.service.js';
 
 export async function createLogin(req, res) {
   // Paso 1. Obtener los datos. 
@@ -141,10 +143,70 @@ export async function createSignup(req, res) {
       message: 'El usuario no se pudo crear',
     });
 
+  await sendMail({
+    to: user.email,
+    subject: 'Bienvenido a Task Manager',
+    body: `
+      http://localhost:4200/recoveryPassword?token=${token}
+      <head><head>
+      <body>
+        <h1>Hola ${user.name}</h1>
+        <p>Te damos la bienvenida a Task Manager</p>
+      </body>
+    `,
+  });
+
   return res
     .status(201)
     .json({
       success: true,
       message: 'El usuario se ha creado',
     });
+}
+
+export async function sendEmail(req, res) {
+  const {
+    newPassword,
+    token,
+    to,
+    subject,
+    body,
+  } = req.body;
+
+  try {
+    const tokenVerified = await jwtVerify(token);
+    if (!tokenVerified) return res
+      .status(400)
+      .json({
+        message: 'nose pudo modificar la password',
+      });
+
+    const userId = tokenVerified.sub;
+
+    const newHashPassword = await hashPassword(newPassword);
+
+    await User.update({
+      password: newHashPassword,
+    }, {
+      where: {
+        id: userId,
+      },
+    });
+
+    await sendMail({ to, subject, body, });
+
+    return res
+      .status(200)
+      .json({
+        success: true,
+        message: 'El correo se ha enviado',
+      });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({
+        success: false,
+        message: err.message,
+      });
+  }
 }
